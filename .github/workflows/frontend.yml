@@ -15,5 +15,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+          working-directory: ./frontend
       - run: npm ci
       - run: npm run build
