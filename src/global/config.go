@@ -8,8 +8,9 @@ import (
 )
 
 var (
-	Port = 0
-	Addr = ""
+	Port    = 0
+	Addr    = ""
+	RootDir = "."
 )
 
 func LoadConfigs() error {
@@ -21,5 +22,7 @@ func LoadConfigs() error {
 
 	Port, e = strconv.Atoi(os.Getenv("HTTP_PORT"))
 	Addr = os.Getenv("BIND_ADDR")
+	RootDir = os.Getenv("ROOT_DIR")
+
 	return e
 }

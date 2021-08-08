@@ -7,8 +7,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/bandozia/lolover/src/fileservice"
 	"github.com/bandozia/lolover/src/global"
+	"github.com/bandozia/lolover/src/handler"
+	"github.com/bandozia/lolover/src/middleware"
 )
 
 //go:embed frontend/public/*
@@ -19,20 +20,20 @@ func main() {
 		log.Fatal("Error loading configurations", e.Error())
 	}
 
-	//startServer(frontendRoot)
-	fileservice.RenderDir()
+	startServer(frontendRoot)
+
 }
 
 func startServer(staticContent embed.FS) {
 	content, _ := fs.Sub(frontendRoot, "frontend/public")
 
-	// configsHandler := handler.Handler{
-	// 	HandleFunc: handler.GetConfigs,
-	// }
-	// handler.AddMiddleware(middleware.DevCors)
-	// handler.AddMiddleware(middleware.TestMidle)
+	dirHandler := handler.Handler{
+		HandleFunc: handler.GetDir,
+	}
 
-	// http.HandleFunc("/api", configsHandler.Handle)
+	handler.AddMiddleware(middleware.DevCors)
+
+	http.HandleFunc("/api/dir", dirHandler.Handle)
 
 	http.Handle("/", http.FileServer(http.FS(content)))
 

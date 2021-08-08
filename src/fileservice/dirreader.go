@@ -1,28 +1,45 @@
 package fileservice
 
 import (
-	"fmt"
-	"log"
+	"errors"
+	"io/ioutil"
 	"os"
-	"path/filepath"
+
+	"github.com/bandozia/lolover/src/global"
 )
 
-func RenderDir() {
-	// if files, e := ioutil.ReadDir("/home/bruno"); e == nil {
+func RenderTop(dir string) (<-chan FileEntity, error) {
 
-	// 	for _, f := range files {
-	// 		println(f.Name())
-	// 	}
-	// }
-	err := filepath.Walk(".",
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			fmt.Println(path, info.Size())
-			return nil
-		})
-	if err != nil {
-		log.Println(err)
+	if s, e := os.Stat(dir); e == nil {
+		if !s.IsDir() || !validate(dir) {
+			return nil, errors.New("invalid path")
+		}
+	} else {
+		return nil, e
 	}
+
+	ch := make(chan FileEntity)
+	go render(global.RootDir, ch)
+
+	return ch, nil
+}
+
+func render(path string, c chan FileEntity) {
+	defer close(c)
+	if found, e := ioutil.ReadDir(path); e == nil {
+		for _, f := range found {
+			c <- FileEntity{
+				Name: f.Name(),
+			}
+		}
+	} else {
+		c <- FileEntity{
+			IsError: true,
+		}
+	}
+}
+
+func validate(path string) bool {
+	// TODO: check for travessal
+	return true
 }
