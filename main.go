@@ -21,7 +21,6 @@ func main() {
 	}
 
 	startServer(frontendRoot)
-
 }
 
 func startServer(staticContent embed.FS) {

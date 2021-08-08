@@ -4,8 +4,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
-
-	"github.com/bandozia/lolover/src/global"
 )
 
 func RenderTop(dir string) (<-chan FileEntity, error) {
@@ -19,7 +17,7 @@ func RenderTop(dir string) (<-chan FileEntity, error) {
 	}
 
 	ch := make(chan FileEntity)
-	go render(global.RootDir, ch)
+	go render(dir, ch)
 
 	return ch, nil
 }
@@ -29,7 +27,8 @@ func render(path string, c chan FileEntity) {
 	if found, e := ioutil.ReadDir(path); e == nil {
 		for _, f := range found {
 			c <- FileEntity{
-				Name: f.Name(),
+				Name:  f.Name(),
+				IsDir: f.IsDir(),
 			}
 		}
 	} else {
@@ -40,6 +39,6 @@ func render(path string, c chan FileEntity) {
 }
 
 func validate(path string) bool {
-	// TODO: check for travessal
+	// TODO: check for travessal based on root path
 	return true
 }
