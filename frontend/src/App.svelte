@@ -1,10 +1,12 @@
 <script lang="ts">
-	export let name: string;
+	async function test() {
+		var res = await fetch("http://localhost:8080/api")
+		alert(res)
+	}
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<button on:click="{test}">test</button>
 </main>
 
 <style>
