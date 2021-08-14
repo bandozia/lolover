@@ -1,8 +1,18 @@
 <script lang="ts">
-	async function test() {
-		var res = await fetch("http://localhost:8080/api")
-		alert(res)
+import { onMount } from "svelte";
+
+
+	function test() {
+		console.log("tobs")
+				
 	}
+
+	onMount(() => {
+		const sse = new EventSource("http://localhost:6996/api/test")
+		sse.onmessage = e => {
+			console.log("fui")
+		}		
+	})
 </script>
 
 <main>

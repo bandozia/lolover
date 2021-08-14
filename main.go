@@ -30,10 +30,9 @@ func startServer(staticContent embed.FS) {
 		HandleFunc: handler.GetDir,
 	}
 
-	handler.AddMiddleware(middleware.DevCors)
-
 	http.HandleFunc("/api/dir", dirHandler.Handle)
 
+	handler.AddMiddleware(middleware.DevCors)
 	http.Handle("/", http.FileServer(http.FS(content)))
 
 	fmt.Printf("RUNNING: http://%s:%d\n", global.Addr, global.Port)
