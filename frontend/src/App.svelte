@@ -1,18 +1,15 @@
 <script lang="ts">
-import { onMount } from "svelte";
 
-
-	function test() {
-		console.log("tobs")
-				
+	async function test() {
+		var res = await fetch("http://localhost:6996/api/dir", {
+			method: 'POST',
+			body: JSON.stringify({
+				path: "/home/bruno/projects/lolover_testroot"
+			})
+		})
+		console.log(await res.json());
 	}
-
-	onMount(() => {
-		const sse = new EventSource("http://localhost:6996/api/test")
-		sse.onmessage = e => {
-			console.log("fui")
-		}		
-	})
+	
 </script>
 
 <main>

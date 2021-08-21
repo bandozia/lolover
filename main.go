@@ -26,13 +26,14 @@ func main() {
 func startServer(staticContent embed.FS) {
 	content, _ := fs.Sub(frontendRoot, "frontend/public")
 
+	handler.AddMiddleware(middleware.DevCors)
+
 	dirHandler := handler.Handler{
 		HandleFunc: handler.GetDir,
 	}
 
 	http.HandleFunc("/api/dir", dirHandler.Handle)
 
-	handler.AddMiddleware(middleware.DevCors)
 	http.Handle("/", http.FileServer(http.FS(content)))
 
 	fmt.Printf("RUNNING: http://%s:%d\n", global.Addr, global.Port)
