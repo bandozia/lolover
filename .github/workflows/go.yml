@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Build frontend
         uses: actions/setup-node@v1
+      
+      - name: Build frontend        
         with:
           node-version: 14
         run: npm ci
